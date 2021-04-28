@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     plt.ion()
     fig = plt.figure()
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(111, projection='3d')
 
     pose, = ax.plot(np.zeros(V * M), np.zeros(V * M), 'g^')
     ax.axis([-1, 1, -1, 1])
@@ -111,3 +111,5 @@ if __name__ == '__main__':
             pose.set_ydata(y)
             fig.canvas.draw()
             plt.pause(1)
+
+    plt.ioff()

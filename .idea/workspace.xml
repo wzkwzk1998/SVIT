@@ -14,7 +14,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1dbfc5d-f587-4f1a-8dda-f0da96c85d55" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xsub/train.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xview/test.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xview/train_model3.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/svit/ntu-xview/train.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/svit/ntu-xview/train.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mdlog/param_log.md" beforeDir="false" afterPath="$PROJECT_DIR$/mdlog/param_log.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/feeder/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/feeder/feeder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/net/svit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/svit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/processors/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/processors/processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/utils/ntu_read_skeleton.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/utils/ntu_read_skeleton.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/visualization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +89,7 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.feeder">
+  <component name="RunManager" selected="Python.test">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="SVIT" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -145,28 +156,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ntu_read_skeleton" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SVIT" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/tools/utils" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/tools/utils/ntu_read_skeleton.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="processor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SVIT" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -215,9 +204,6 @@
       <module name="SVIT" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -233,21 +219,40 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="visualization" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SVIT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/tools/visualization.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.ntu_read_skeleton" />
       <item itemvalue="Python.test" />
       <item itemvalue="Python.processor" />
       <item itemvalue="Python.svit" />
       <item itemvalue="Python.feeder" />
+      <item itemvalue="Python.visualization" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.feeder" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.visualization" />
+        <item itemvalue="Python.feeder" />
         <item itemvalue="Python.svit" />
         <item itemvalue="Python.processor" />
-        <item itemvalue="Python.ntu_read_skeleton" />
       </list>
     </recent_temporary>
   </component>
@@ -271,7 +276,8 @@
       <workItem from="1616464562695" duration="14037000" />
       <workItem from="1616600173914" duration="17096000" />
       <workItem from="1616831346464" duration="34242000" />
-      <workItem from="1618409934544" duration="1457000" />
+      <workItem from="1618409934544" duration="32148000" />
+      <workItem from="1619180880265" duration="17862000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1618410059754</created>
@@ -280,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618410059754</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1618411753682</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618411753682</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,18 +317,18 @@
     <option name="LAST_COMMIT_MESSAGE" value="first commit" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="320" y="115" key="#Deployment" timestamp="1618411024567">
+    <state x="320" y="115" key="#Deployment" timestamp="1619163933723">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="115" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1618411024567" />
+    <state x="320" y="115" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1619163933723" />
     <state x="355" y="129" key="#Options" timestamp="1615892380443">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="355" y="129" key="#Options/0.0.1440.900@0.0.1440.900" timestamp="1615892380443" />
-    <state x="304" y="102" key="#SSH_Configurations" timestamp="1618411010998">
+    <state x="304" y="102" key="#SSH_Configurations" timestamp="1619163932909">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="304" y="102" key="#SSH_Configurations/0.0.1440.900@0.0.1440.900" timestamp="1618411010998" />
+    <state x="304" y="102" key="#SSH_Configurations/0.0.1440.900@0.0.1440.900" timestamp="1619163932909" />
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1615262946214">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -370,10 +383,10 @@
     </state>
     <state x="352" y="149" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1618410933234" />
     <state x="469" y="179" key="SettingsEditor/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1615828925799" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1618410299641">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1618411762597">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1618410299641" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1618411762597" />
     <state x="752" y="423" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1615828851382">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -387,14 +400,25 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="720" y="421" width="611" height="269" key="org.intellij.images.editor.actions.BackgroundImageDialog/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1615218959663" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1616638786086">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1619168586067">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1616638786086" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1619168586067" />
     <state x="450" y="369" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1615302051901">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="450" y="369" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1440.900@0.0.1440.900" timestamp="1615302051901" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/tools/ntu_gendata.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SVIT$main.coverage" NAME="main Coverage Results" MODIFIED="1616073050655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

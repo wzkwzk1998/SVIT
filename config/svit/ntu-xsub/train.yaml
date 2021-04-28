@@ -10,8 +10,8 @@ test_feeder_args:
   label_path: ../data/NTU-RGB-D/xview/eval_label.pkl
 
 # model
-weights_save_path: ../model/ntu_rgb+d/Model_xview.pt
-weights_path: ../model/ntu_rgb+d/Model_xview.pt
+weights_save_path: ../model/ntu_rgb+d/Model_xsub.pt
+weights_path: ../model/ntu_rgb+d/Model_xsub.pt
 model: net.svit.Model
 model_args:
   temporal_size: 300
@@ -22,7 +22,8 @@ model_args:
   depth: 6
   heads: 8
   mlp_dim: 512
-
+  dropout: 0.4
+  emb_dropout: 0.4
 
 # optim
 optimizer: Adam
@@ -30,12 +31,13 @@ base_lr: 0.0012
 weight_decay: 0.0001
 
 # lr_scheduler
-step_size: 100
-scheduler_gamma: 0.1
+lr_scheduler: Cos         # must be Step or Cos
+T_max: 50
+
 
 # training
 device: [0,1,2,3]
-train_batchsize: 32
-test_batchsize: 32
-num_epoch: 80
+train_batchsize: 128
+test_batchsize: 128
+num_epoch: 150
 test_interval: 5

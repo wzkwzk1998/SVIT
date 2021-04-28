@@ -1,17 +1,13 @@
-
+weights_save_path: ../model/ntu_rgb+d/Model2_xview.pt
+weights_path: ../model/ntu_rgb+d/Model_xview.pt
 
 # feeder
 feeder: feeder.feeder.Feeder
-train_feeder_args:
-  data_path: ../data/NTU-RGB-D/xview/train_data.npy
-  label_path: ../data/NTU-RGB-D/xview/train_label.pkl
 test_feeder_args:
   data_path: ../data/NTU-RGB-D/xview/eval_data.npy
   label_path: ../data/NTU-RGB-D/xview/eval_label.pkl
 
 # model
-weights_save_path: ../model/ntu_rgb+d/Model_xview.pt
-weights_path: ../model/ntu_rgb+d/Model_xview.pt
 model: net.svit.Model
 model_args:
   temporal_size: 300
@@ -30,12 +26,10 @@ base_lr: 0.0012
 weight_decay: 0.0001
 
 # lr_scheduler
-step_size: 100
+step_size: 50
 scheduler_gamma: 0.1
 
-# training
+# test
+phase: eval
 device: [0,1,2,3]
-train_batchsize: 32
-test_batchsize: 32
-num_epoch: 80
-test_interval: 5
+test_batchsize: 128

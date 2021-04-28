@@ -87,8 +87,41 @@ class Processor():
         print("[Number of parameter]: %.2fM" % (self.param_total / 1e6))
 
     def load_weights(self):
-        # todo: 加载训练好的权重
-        pass
+        if self.arg.weights_path is None:
+            return
+        ignore_weights = self.arg.ignore_weights
+        if ignore_weights is None:
+            ignore_weights = []
+        if isinstance(ignore_weights, str):
+            ignore_weights = [ignore_weights]
+
+        print('Load weights from {}.'.format(self.arg.weights_path))
+        weights = torch.load(self.arg.weights_path)
+        weights = OrderedDict([[k.split('module.')[-1],
+                                v.cpu()] for k, v in weights.items()])
+
+        # filter weights
+        for i in ignore_weights:
+            ignore_name = list()
+            for w in weights:
+                if w.find(i) == 0:
+                    ignore_name.append(w)
+            for n in ignore_name:
+                weights.pop(n)
+                print('Filter [{}] remove weights [{}].'.format(i,n))
+
+        for w in weights:
+            print('Load weights [{}].'.format(w))
+
+        try:
+            self.model.load_state_dict(weights)
+        except (KeyError, RuntimeError):
+            state = self.model.state_dict()
+            diff = list(set(state.keys()).difference(set(weights.keys())))
+            for d in diff:
+                print('Can not find weights [{}].'.format(d))
+            state.update(weights)
+            self.model.load_state_dict(state)
 
     def gpu(self):
         if self.arg.use_gpu:
@@ -140,9 +173,13 @@ class Processor():
         else:
             raise ValueError()
 
-        self.lr_scheduler = lr_scheduler.StepLR(optimizer=self.optimizer,
-                                                step_size=self.arg.step_size,
-                                                gamma=self.arg.scheduler_gamma)
+        if self.arg.lr_scheduler == 'Step':
+            self.lr_scheduler = lr_scheduler.StepLR(optimizer=self.optimizer,
+                                                    step_size=self.arg.step_size,
+                                                    gamma=self.arg.scheduler_gamma)
+        elif self.arg.lr_scheduler == 'Cos':
+            self.lr_scheduler = lr_scheduler.CosineAnnealingLR(optimizer=self.optimizer,
+                                                               T_max=self.arg.T_max)
 
     def train(self):
         """
@@ -209,6 +246,7 @@ class Processor():
         self.epoch_info['epoch_num'] = 0
 
         if self.arg.phase == 'train':
+            self.epoch_info['max_acc'] = 0.0
             for epoch in range(0, self.arg.num_epoch):
                 print('epoch is {}'.format(epoch))
                 self.epoch_info['epoch_num'] += 1
@@ -217,23 +255,16 @@ class Processor():
                 self.writer.add_scalar('data/train_loss', self.epoch_info['train_mean_loss'], self.epoch_info['epoch_num'])
 
 
-                # save arg
-                # if((epoch + 1) % self.arg.save_interval == 0) or (
-                #         (epoch +1 ) % self.arg.num_epoch == 0):
-                #     filename = 'epoch{}_model.pt'.format(epoch+1)
-                #     model_path = '{}/{}'.format('../../model',filename)
-                #     state_dict = self.model.state_dict()
-                #     weights = OrderedDict([[''.join(k.split('module.')),
-                #                             v.cpu()] for k, v in state_dict.items()])
-                #     torch.save(weights, model_path)
-                #
-
                 # eval
                 if ((epoch + 1) % self.arg.test_interval == 0) or (
                         (epoch + 1) % self.arg.num_epoch == 0):
                     self.test()
                     self.writer.add_scalar('data/test_loss', self.epoch_info['test_mean_loss'], self.epoch_info['epoch_num'])
                     self.writer.add_scalars('data/top-1', self.epoch_info['acc'], self.epoch_info['epoch_num'])
+                    if(self.epoch_info['acc']['top-1'] > self.epoch_info['max_acc']):
+                        self.epoch_info['max_acc'] = self.epoch_info['acc']['top-1']
+                        self.save_model(self.arg.weights_save_path)
+
 
         elif self.arg.phase == 'eval':
             self.test()
@@ -249,6 +280,16 @@ class Processor():
         print('Top-{} acc: {:.2f}%'.format(k, 100 * acc))
         return acc
 
+    def save_model(self, model_path):
+        model_dir = os.path.join(*(model_path.split(os.sep)[0:-1]))
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+        state_dict = self.model.state_dict()
+        weights = OrderedDict([[''.join(k.split('module.')),
+                                v.cpu()] for k, v in state_dict.items()])
+        torch.save(weights, model_path)
+        print('The model has been saved as {}.'.format(model_path))
+
     @staticmethod
     def get_parser():
 
@@ -263,7 +304,7 @@ class Processor():
         parser.add_argument('--device', type=int, default=0, nargs='+',
                             help='the indexes of GPUs for training or testing')
         parser.add_argument('--phase', default='train', help='choose train or test')
-        parser.add_argument('--use_gpu', type=str2bool, default=False, help='use GPUs or not')
+        parser.add_argument('--use_gpu', type=str2bool, default=True, help='use GPUs or not')
         parser.add_argument('--test_interval', type=int, default=5, help='')
         parser.add_argument('--show_topk', type=int, default=[1, 5], nargs='+', help='which top-k acc is evaluated')
         parser.add_argument('--debug', type=str2bool, default=False, help='use debug mode')
@@ -274,8 +315,11 @@ class Processor():
         parser.add_argument('--base_lr', type=float, default=0.01, help='initial learning rate')
 
         # lr_scheduler
+        parser.add_argument('--lr_scheduler', default='Cos', help='learning rate scheduler used')
+        parser.add_argument('--T_max', type=int, default=3)
         parser.add_argument('--step_size', type=int, default=100)
         parser.add_argument('--scheduler_gamma', type=int, default=0.1)
+
 
         # DataLoader
         parser.add_argument('--num_workers', type=int, default=2, help='num_workers for dataloader')
@@ -290,5 +334,11 @@ class Processor():
         parser.add_argument('--feeder', default='feeder.feeder.Feeder', help='feeder used for dataloader')
         parser.add_argument('--train_feeder_args', default=dict(), help='train feeder_args')
         parser.add_argument('--test_feeder_args', default=dict(), help='test feeder_args')
+
+        # weight
+        parser.add_argument('--weights_path', default=None, help='the weights for network initialization')
+        parser.add_argument('--ignore_weights', type=str, default=[], nargs='+',
+                            help='the name of weights which will be ignored in the initialization')
+        parser.add_argument('--weights_save_path', default=None, help='the weight file path for model')
 
         return parser

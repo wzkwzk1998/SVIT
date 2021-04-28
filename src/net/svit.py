@@ -36,6 +36,7 @@ class Attention(nn.Module):
         self.scale = dim_head ** -0.5
 
         self.attend = nn.Softmax(dim = -1)
+        self.attn_drop = nn.Dropout(dropout)
         self.to_qkv = nn.Linear(dim, inner_dim * 3, bias = False)
 
         self.to_out = nn.Sequential(
@@ -51,6 +52,7 @@ class Attention(nn.Module):
         dots = einsum('b h i d, b h j d -> b h i j', q, k) * self.scale
 
         attn = self.attend(dots)
+        attn = self.attn_drop(attn)
 
         out = einsum('b h i j, b h j d -> b h i d', attn, v)
         out = rearrange(out, 'b h n d -> b n (h d)')
@@ -74,6 +76,32 @@ class Transformer(nn.Module):
         return x
 
 
+class ST_Transformer(nn.Module):
+    """this transformer is consit of spatial attention and temporal attention"""
+    def __init__(self, dim, depth, heads, dim_head, mlp_dim, dropout = 0.):
+        super().__init__()
+        self.layers = nn.ModuleList([])
+        for _ in range(depth):
+            self.layers.append(nn.ModuleList([
+                PreNorm(dim, Attention(dim, heads = heads, dim_head = dim_head, dropout = dropout)),
+                PreNorm(dim, Attention(dim, heads = heads, dim_head = dim_head, dropout = dropout)),
+                PreNorm(dim, FeedForward(dim, mlp_dim, dropout = dropout))
+            ]))
+
+    def forward(self, x):
+        b, t, n, d = x.shape
+        for s_attn, t_attn, ff in self.layers:
+            x = rearrange(x, 'b t n d -> (b t) n d')
+            x = s_attn(x) + x
+            x = rearrange(x, '(b t) n d -> b t n d', t=t)
+            x = rearrange(x, 'b t n d -> (b n) t d')
+            x = t_attn(x) + x
+            x = ff(x) + x
+            x = rearrange(x, '(b n) t d -> b n t d', n=n)
+            x = rearrange(x, 'b n t d-> b t n d')
+        return x
+
+
 class Model(nn.Module):
     def __init__(self, *, temporal_size, temporal_stride, num_joint, num_classes, dim,
                  depth, heads, mlp_dim, pool='cls', channels=3,
@@ -87,7 +115,6 @@ class Model(nn.Module):
         self.to_patch_embedding = nn.Sequential(
             Rearrange('n c t v m -> (n m) t v c'),
             Rearrange('b (np ts) v c -> b np (ts v c)', np = num_patches, ts = temporal_stride),
-
             # Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
             nn.Linear(patch_dim, dim),
         )
@@ -125,63 +152,119 @@ class Model(nn.Module):
         return self.mlp_head(x)
 
 
-# class Model(nn.Module):
-#     def __init__(self, *, temporal_size, temporal_stride, num_joint, num_classes, dim,
-#                  depth, heads, mlp_dim, pool='cls', channels=3,
-#                  dim_head=64, dropout=0.5, emb_dropout=0.5):
-#         super().__init__()
-#         assert temporal_size % temporal_stride == 0, 'Image dimensions must be divisible by the patch size.'
-#         num_patches = (temporal_size // temporal_stride)
-#         spatial_patch_dim = temporal_stride * channels
-#         assert pool in {'cls', 'mean'}, 'pool type must be either cls (cls token) or mean (mean pooling)'
-#
-#         self.to_patch_embedding = nn.Sequential(
-#             Rearrange('n c t v m -> (n m) t v c'),
-#             Rearrange('b (np ts) v c -> b np v (ts c)', np = num_patches, ts = temporal_stride),
-#             # Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
-#             nn.Linear(spatial_patch_dim, dim),
-#         )
-#
-#         self.pos_embedding = nn.Parameter(torch.randn(1, num_patches, num_joint+1, dim))
-#         self.space_cls_token = nn.Parameter(torch.randn(1, 1, dim))
-#
-#         self.dropout = nn.Dropout(emb_dropout)
-#
-#         self.spatial_transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
-#
-#         self.temporal_cls_token = nn.Parameter(torch.randn(1, 1, dim))
-#
-#         self.temporal_transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
-#
-#         self.pool = pool
-#         self.to_latent = nn.Identity()
-#
-#         self.mlp_head = nn.Sequential(
-#             nn.LayerNorm(dim),
-#             nn.Linear(dim, num_classes)
-#         )
-#
-#     def forward(self, x):
-#         x = self.to_patch_embedding(x)
-#         b, t, n, _ = x.shape
-#
-#         cls_space_tokens = repeat(self.space_cls_token, '() n d -> b t n d', b = b, t  = t)
-#         x = torch.cat((cls_space_tokens, x), dim=2)
-#         x += self.pos_embedding[:, :, :(n + 1)]
-#         x = self.dropout(x)
-#
-#         x = rearrange(x, 'b t n d -> (b t) n d')
-#         x = self.spatial_transformer(x)
-#         x = rearrange(x[:, 0], '(b t) ... -> b t ...', b=b, t=t)
-#
-#         cls_temporal_tokens = repeat(self.temporal_cls_token, '() n d -> b n d', b=b)
-#         x = torch.cat((cls_temporal_tokens, x), dim=1)
-#
-#         x = self.temporal_transformer(x)
-#
-#         x = rearrange(x, '(b m) n d -> b m n d', m=2)
-#         x = x.mean(dim=1)                 # mean two body frame
-#         x = x.mean(dim=1) if self.pool == 'mean' else x[:, 0]
-#
-#         x = self.to_latent(x)
-#         return self.mlp_head(x)
+class Model2(nn.Module):
+    """
+    this model is consist of separate spatial transformer and temporal transformer
+    """
+    def __init__(self, temporal_size, temporal_stride, num_joint, num_classes, s_dim, t_dim,
+                 depth, heads, s_mlp_dim, t_mlp_dim, pool='cls', channels=3,
+                 s_dim_head=64, t_dim_head=8, dropout=0.5, emb_dropout=0.5):
+        super().__init__()
+        assert temporal_size % temporal_stride == 0, 'Image dimensions must be divisible by the patch size.'
+        num_patches = (temporal_size // temporal_stride)
+        spatial_patch_dim = temporal_stride * channels
+        assert pool in {'cls', 'mean'}, 'pool type must be either cls (cls token) or mean (mean pooling)'
+
+        self.to_patch_embedding = nn.Sequential(
+            Rearrange('n c t v m -> (n m) t v c'),
+            Rearrange('b (np ts) v c -> b np v (ts c)', np = num_patches, ts = temporal_stride),
+            # Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
+            nn.Linear(spatial_patch_dim, s_dim),
+        )
+
+        self.pos_embedding = nn.Parameter(torch.randn(1, num_patches, num_joint+1, s_dim))
+        self.space_cls_token = nn.Parameter(torch.randn(1, 1, s_dim))
+
+        self.dropout = nn.Dropout(emb_dropout)
+
+        self.spatial_transformer = Transformer(s_dim, depth, heads, s_dim_head, s_mlp_dim, dropout)
+
+        self.scale_layer = nn.Linear(s_dim, t_dim)
+
+        self.temporal_cls_token = nn.Parameter(torch.randn(1, 1, t_dim))
+        self.temporal_transformer = Transformer(t_dim, depth, heads, t_dim_head, t_mlp_dim, dropout)
+
+        self.pool = pool
+        self.to_latent = nn.Identity()
+
+        self.mlp_head = nn.Sequential(
+            nn.LayerNorm(t_dim),
+            nn.Linear(t_dim, num_classes)
+        )
+
+    def forward(self, x):
+        x = self.to_patch_embedding(x)
+        b, t, n, _ = x.shape
+
+        cls_space_tokens = repeat(self.space_cls_token, '() n d -> b t n d', b = b, t  = t)
+        x = torch.cat((cls_space_tokens, x), dim=2)
+        x += self.pos_embedding[:, :, :(n + 1)]
+        x = self.dropout(x)
+
+        x = rearrange(x, 'b t n d -> (b t) n d')
+        x = self.spatial_transformer(x)
+        x = rearrange(x[:, 0], '(b t) ... -> b t ...', b=b, t=t)
+
+        cls_temporal_tokens = repeat(self.temporal_cls_token, '() n d -> b n d', b=b)
+
+        x = self.scale_layer(x)
+        x = torch.cat((cls_temporal_tokens, x), dim=1)
+
+        x = self.temporal_transformer(x)
+
+        x = rearrange(x, '(b m) n d -> b m n d', m=2)
+        x = x.mean(dim=1)                 # mean two body frame
+        x = x.mean(dim=1) if self.pool == 'mean' else x[:, 0]
+
+        x = self.to_latent(x)
+        return self.mlp_head(x)
+
+
+class Model3(nn.Module):
+    def __init__(self, *, temporal_size, temporal_stride, num_joint, num_classes, dim,
+                 depth, heads, mlp_dim, pool='cls', channels=3,
+                 dim_head=64, dropout=0.5, emb_dropout=0.5):
+        super().__init__()
+        assert temporal_size % temporal_stride == 0, 'Image dimensions must be divisible by the patch size.'
+        num_patches = (temporal_size // temporal_stride)
+        patch_dim = temporal_stride * num_joint * channels
+
+        self.to_patch_embedding = nn.Sequential(
+            Rearrange('n c t v m -> (n m) t v c'),
+            Rearrange('b (np ts) v c -> b np (ts v c)', np=num_patches, ts=temporal_stride),
+
+            # Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
+            nn.Linear(patch_dim, dim*num_joint),
+            Rearrange('b np (v d) -> b np v d', v=num_joint)
+        )
+
+        self.pos_embedding = nn.Parameter(torch.randn(1, num_patches, num_joint, dim))
+        self.dropout = nn.Dropout(emb_dropout)
+
+        self.transformer = ST_Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
+
+        self.pool = pool
+        self.to_latent = nn.Identity()
+
+        self.mlp_head = nn.Sequential(
+            nn.LayerNorm(dim*num_joint),
+            nn.Linear(dim*num_joint, num_classes)
+        )
+
+    def forward(self, x):
+        x = self.to_patch_embedding(x)
+        b, t, n, d = x.shape
+
+        x += self.pos_embedding[:, :(t + 1), :(n + 1)]
+        x = self.dropout(x)
+
+        x = self.transformer(x)
+
+        x = rearrange(x, '(b m) t n d -> b m t (n d)', m=2)             # mean two body frame
+        x = x.mean(dim=1)           # t dim
+        x = x.mean(dim=1)           # m dim
+
+        x = self.to_latent(x)
+        return self.mlp_head(x)
+
+
