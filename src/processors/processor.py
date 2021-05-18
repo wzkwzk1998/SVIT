@@ -73,7 +73,8 @@ class Processor():
         self.arg = parser.parse_args()
 
     def init_environment(self):
-        self.writer = SummaryWriter('../log/{}'.format(datetime.now().strftime('%b%d_%H-%M-%S')))
+        if not self.arg.debug:
+            self.writer = SummaryWriter('../log/{}'.format(datetime.now().strftime('%b%d_%H-%M-%S')))
         self.epoch_info = dict()
 
     def load_model(self):
@@ -84,9 +85,12 @@ class Processor():
         self.model = model
         self.loss = loss
         self.param_total = sum([param.nelement() for param in self.model.parameters()])
+        print(self.model)
         print("[Number of parameter]: %.2fM" % (self.param_total / 1e6))
 
     def load_weights(self):
+        if self.arg.debug:
+            return
         if self.arg.weights_path is None:
             return
         ignore_weights = self.arg.ignore_weights
@@ -165,6 +169,7 @@ class Processor():
             self.optimizer = optim.SGD(self.model.parameters(),
                                        lr=self.arg.base_lr,
                                        weight_decay=self.arg.weight_decay,
+                                       momentum=self.arg.momentum
                                        )
         elif self.arg.optimizer == 'Adam':
             self.optimizer = optim.Adam(self.model.parameters(),
@@ -252,18 +257,21 @@ class Processor():
                 self.epoch_info['epoch_num'] += 1
                 # train
                 self.train()
-                self.writer.add_scalar('data/train_loss', self.epoch_info['train_mean_loss'], self.epoch_info['epoch_num'])
+                if not self.arg.debug:
+                    self.writer.add_scalar('data/train_loss', self.epoch_info['train_mean_loss'], self.epoch_info['epoch_num'])
 
 
                 # eval
                 if ((epoch + 1) % self.arg.test_interval == 0) or (
                         (epoch + 1) % self.arg.num_epoch == 0):
                     self.test()
-                    self.writer.add_scalar('data/test_loss', self.epoch_info['test_mean_loss'], self.epoch_info['epoch_num'])
-                    self.writer.add_scalars('data/top-1', self.epoch_info['acc'], self.epoch_info['epoch_num'])
+                    if not self.arg.debug:
+                        self.writer.add_scalar('data/test_loss', self.epoch_info['test_mean_loss'], self.epoch_info['epoch_num'])
+                        self.writer.add_scalars('data/top-1', self.epoch_info['acc'], self.epoch_info['epoch_num'])
                     if(self.epoch_info['acc']['top-1'] > self.epoch_info['max_acc']):
                         self.epoch_info['max_acc'] = self.epoch_info['acc']['top-1']
-                        self.save_model(self.arg.weights_save_path)
+                        if not self.arg.debug:
+                            self.save_model(self.arg.weights_save_path)
 
 
         elif self.arg.phase == 'eval':
@@ -271,7 +279,8 @@ class Processor():
         else:
             raise ValueError()
 
-        self.writer.close()
+        if not self.arg.debug:
+            self.writer.close()
 
     def show_topk(self, k):
         rank = self.result.argsort()  # the index of array from small to large
@@ -313,6 +322,7 @@ class Processor():
         parser.add_argument('--optimizer', default='Adam', help='type of optimizer')
         parser.add_argument('--weight_decay', type=int, default=0.0001, help='weight decay of the optimizer')
         parser.add_argument('--base_lr', type=float, default=0.01, help='initial learning rate')
+        parser.add_argument('--momentum', type=float, default=0.9)
 
         # lr_scheduler
         parser.add_argument('--lr_scheduler', default='Cos', help='learning rate scheduler used')

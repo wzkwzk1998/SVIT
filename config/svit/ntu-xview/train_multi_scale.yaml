@@ -1,3 +1,5 @@
+
+
 # feeder
 feeder: feeder.feeder.Feeder
 train_feeder_args:
@@ -7,26 +9,28 @@ test_feeder_args:
   data_path: ../data/NTU-RGB-D/xview/eval_data.npy
   label_path: ../data/NTU-RGB-D/xview/eval_label.pkl
 
-
 # model
-weights_save_path: ../model/ntu_rgb+d/Model3_xview.pt
-#weights_path: ../model/ntu_rgb+d/Model3_xview.pt
-model: net.svit.Model3
+weights_save_path: ../model/ntu_rgb+d/Multi_scale_model_xview.pt
+weights_path: ../model/ntu_rgb+d/Multi_scale_model_xview.pt
+model: net.svit.Multi_scale_model
 model_args:
   temporal_size: 300
-  temporal_stride: 20
+  temporal_stride_1: 2
+  temporal_stride_2: 10
   num_joint: 25
   num_classes: 60
-  dim: 128
-  depth: 5
-  dim_head: 64
+  dim: 512
+  depth: 6
   heads: 8
-  mlp_dim: 256
-  dropout: 0.5
+  dim_head: 64
+  mlp_dim: 512
+  dropout: 0.
+  emb_dropout: 0.
+
 
 # optim
 optimizer: Adam
-base_lr: 0.0012
+base_lr: 0.0015
 weight_decay: 0.0001
 
 # lr_scheduler
@@ -34,7 +38,7 @@ lr_scheduler: Cos
 T_max : 50
 
 # training
-device: [0,1,2,3]
+device: [0]
 train_batchsize: 128
 test_batchsize: 128
 num_epoch: 150

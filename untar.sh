@@ -1,0 +1,1 @@
+unzip nturgbd_skeletons_s001_to_s017.zip

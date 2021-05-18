@@ -11,7 +11,7 @@ from mpl_toolkits.mplot3d import axes3d
 
 data_path = "/Users/wzk1998/data/NTU-RGB-D/xview/eval_data.npy"
 label_path = '/Users/wzk1998/data/NTU-RGB-D/xview/eval_label.pkl'
-video_id = 'S001C001P001R001A020'
+video_id = 'S001C001P001R001A007'
 
 
 actions = {
