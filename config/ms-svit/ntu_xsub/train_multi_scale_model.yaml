@@ -1,0 +1,51 @@
+# feeder
+feeder: feeder.feeder.Feeder
+train_feeder_args:
+  data_path: ../data/NTU-RGB-D/xsub/train_data.npy
+  label_path: ../data/NTU-RGB-D/xsub/train_label.pkl
+test_feeder_args:
+  data_path: ../data/NTU-RGB-D/xsub/eval_data.npy
+  label_path: ../data/NTU-RGB-D/xsub/eval_label.pkl
+
+
+# model
+weights_save_path: ../model/ntu_rgb+d/Multi_scale_model_cross_xsub.pt
+#weights_path: ../model/ntu_rgb+d/Multi_scale_model_cross_xsub.pt
+model: net.ms_svit.Multi_scale_model
+model_args:
+  temporal_size: 300
+  temporal_stride_1: 2
+  temporal_stride_2: 10
+  num_joint: 25
+  num_classes: 60
+  dim: 512
+  depth: 2
+  lg_depth: 3
+  sm_depth: 3
+  cross_depth: 2
+  heads: 8
+  dim_head: 64
+  mlp_dim: 512
+  dropout: 0.5
+  emb_dropout: 0.5
+  cross_dropout: 0.5
+
+
+# optim
+optimizer: Adam
+base_lr: 0.0012
+weight_decay: 0.0001
+
+# lr_scheduler
+lr_scheduler: Cos
+T_max : 50
+#lr_scheduler: Cos
+#step_size: 100
+#scheduler_gamma: 0.1
+
+# training
+device: [0,1]
+train_batchsize: 128
+test_batchsize: 128
+num_epoch: 150
+test_interval: 5

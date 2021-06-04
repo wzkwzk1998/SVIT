@@ -204,7 +204,7 @@ class Multi_scale_model(nn.Module):
                                                        lg_depth=lg_depth,
                                                        sm_depth=sm_depth,
                                                        cross_depth=cross_depth,
-                                                       dropout=cross_dropout,
+                                                       dropout=dropout,
                                                        cross_dropout=cross_dropout,
                                                        heads=heads,
                                                        dim_head=dim_head,

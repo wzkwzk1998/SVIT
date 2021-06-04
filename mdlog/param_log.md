@@ -99,3 +99,11 @@
 
 
 
+# 5.20
+
+## Xsub:
+
+| Time  | Model             | Temporal_stride | Dim  | Depth | Heads | Mlp-dim | Dropout | optimizer | base_lr | weight_decay | train_batchsize | test_batchsize | epoch | Top-1  | Top-5  |      |
+| ----- | ----------------- | --------------- | ---- | ----- | ----- | ------- | ------- | --------- | ------- | ------------ | --------------- | -------------- | ----- | ------ | ------ | ---- |
+| 12:00 | multi-cross-scale | 2 and 10        | 512  | 6     | 8     | 512     | 0.      | Adam      | 0.0005  | 0.0001       | 128             | 128            | 150   | 78.15% | 93.65% |      |
+

@@ -138,6 +138,7 @@ class Processor():
             self.dev = 'cpu'
 
         self.model = self.model.to(self.dev)
+        print("[ gpu count is ]: {}".format(torch.cuda.device_count()))
         if self.arg.use_gpu and len(self.gpus) > 1 and torch.cuda.device_count() > 1:
             self.model = nn.DataParallel(self.model, device_ids=self.gpus)
 

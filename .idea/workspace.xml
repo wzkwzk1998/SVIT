@@ -14,27 +14,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1dbfc5d-f587-4f1a-8dda-f0da96c85d55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/ms-svit/ntu-xview/train_multi_scale_model.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xsub/test.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xsub/train_multi_scale.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xview/test_multi_scale.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xview/train_model2.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/svit/ntu-xview/train_multi_scale.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/net/ms_svit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/untar.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/ms-svit/ntu_xsub/train_multi_scale_model.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocess.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/svit/ntu-xview/test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/svit/ntu-xview/test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/svit/ntu-xview/train_model3.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/svit/ntu-xview/train_model3.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/Apr12_18-18-34/data/top-1/top-1/events.out.tfevents.1618252438.073f3a002f7d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/Apr12_18-18-34/data/top-1/top-5/events.out.tfevents.1618252438.073f3a002f7d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/Apr12_18-18-34/events.out.tfevents.1618251514.073f3a002f7d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/a/events.out.tfevents.1617020836.6c278f0d6756" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/mdlog/param_log.md" beforeDir="false" afterPath="$PROJECT_DIR$/mdlog/param_log.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/svit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/svit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/net/ms_svit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/ms_svit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/processors/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/processors/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/visualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/untar.sh" beforeDir="false" afterPath="$PROJECT_DIR$/untar.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +66,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/config/ms-svit/ntu_xsub" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -88,15 +76,16 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/config/ms-svit/ntu_xsub" />
+      <recent name="$PROJECT_DIR$/log" />
+      <recent name="$PROJECT_DIR$/src/feeder" />
+      <recent name="$PROJECT_DIR$/resources/NTU-RGB-D" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/config/ms-svit/ntu-xview" />
       <recent name="$PROJECT_DIR$/log/a" />
       <recent name="$PROJECT_DIR$/src" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/log" />
-      <recent name="$PROJECT_DIR$/src/feeder" />
-      <recent name="$PROJECT_DIR$/resources/NTU-RGB-D" />
     </key>
   </component>
   <component name="RunManager" selected="Python.test">
@@ -214,6 +203,9 @@
       <module name="SVIT" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -252,11 +244,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.feeder" />
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.test" />
       <item itemvalue="Python.processor" />
       <item itemvalue="Python.svit" />
-      <item itemvalue="Python.feeder" />
+      <item itemvalue="Python.test" />
       <item itemvalue="Python.visualization" />
     </list>
     <recent_temporary>
@@ -297,7 +289,8 @@
       <workItem from="1621045562816" duration="1637000" />
       <workItem from="1621251568565" duration="384000" />
       <workItem from="1621257264983" duration="1696000" />
-      <workItem from="1621261970209" duration="1444000" />
+      <workItem from="1621261970209" duration="7944000" />
+      <workItem from="1622216679724" duration="392000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1618410059754</created>
@@ -320,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619612086306</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="aaa">
+      <created>1621346147347</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1621346147347</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,22 +342,23 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="first commit" />
     <MESSAGE value="add model2 and model3, debugging" />
-    <option name="LAST_COMMIT_MESSAGE" value="add model2 and model3, debugging" />
+    <MESSAGE value="aaa" />
+    <option name="LAST_COMMIT_MESSAGE" value="aaa" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="471" y="130" key="#Deployment" timestamp="1621262247733">
+    <state x="471" y="130" key="#Deployment" timestamp="1621484041334">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="471" y="130" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1621262247733" />
+    <state x="471" y="130" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1621484041334" />
     <state x="427" y="138" key="#Deployment/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1620753047805" />
     <state x="355" y="129" key="#Options" timestamp="1615892380443">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="355" y="129" key="#Options/0.0.1440.900@0.0.1440.900" timestamp="1615892380443" />
-    <state x="304" y="102" key="#SSH_Configurations" timestamp="1621262054197">
+    <state x="304" y="102" key="#SSH_Configurations" timestamp="1621484035530">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="304" y="102" key="#SSH_Configurations/0.0.1440.900@0.0.1440.900" timestamp="1621262054197" />
+    <state x="304" y="102" key="#SSH_Configurations/0.0.1440.900@0.0.1440.900" timestamp="1621484035530" />
     <state x="405" y="122" key="#SSH_Configurations/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1620753046760" />
     <state x="184" y="112" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1615262946214">
       <screen x="0" y="0" width="1440" height="900" />
@@ -413,10 +414,10 @@
     </state>
     <state x="288" y="149" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1621261807587" />
     <state x="469" y="179" key="SettingsEditor/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1615828925799" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1619612096738">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1621346154443">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1619612096738" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1621346154443" />
     <state x="752" y="423" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1615828851382">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -430,10 +431,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="720" y="421" width="611" height="269" key="org.intellij.images.editor.actions.BackgroundImageDialog/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1615218959663" />
-    <state x="593" y="349" key="publish.login" timestamp="1619695919495">
+    <state x="593" y="349" key="publish.login" timestamp="1621484050489">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="593" y="349" key="publish.login/0.0.1440.900@0.0.1440.900" timestamp="1619695919495" />
+    <state x="593" y="349" key="publish.login/0.0.1440.900@0.0.1440.900" timestamp="1621484050489" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1620831183406">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
