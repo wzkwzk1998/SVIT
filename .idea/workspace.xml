@@ -14,15 +14,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1dbfc5d-f587-4f1a-8dda-f0da96c85d55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/ms-svit/ntu_xsub/train_multi_scale_model.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/preprocess.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/train.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mdlog/param_log.md" beforeDir="false" afterPath="$PROJECT_DIR$/mdlog/param_log.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net/ms_svit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/ms_svit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/processors/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/processors/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untar.sh" beforeDir="false" afterPath="$PROJECT_DIR$/untar.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +40,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JupyterTrust" id="96f07fa9-4eb3-43f4-a4bd-c4209a48d2a5" />
@@ -244,8 +249,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.feeder" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.feeder" />
       <item itemvalue="Python.processor" />
       <item itemvalue="Python.svit" />
       <item itemvalue="Python.test" />
@@ -291,6 +296,7 @@
       <workItem from="1621257264983" duration="1696000" />
       <workItem from="1621261970209" duration="7944000" />
       <workItem from="1622216679724" duration="392000" />
+      <workItem from="1622784051718" duration="1200000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1618410059754</created>
@@ -320,7 +326,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621346147347</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="多尺度的融合">
+      <created>1622784144009</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1622784144009</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,7 +356,8 @@
     <MESSAGE value="first commit" />
     <MESSAGE value="add model2 and model3, debugging" />
     <MESSAGE value="aaa" />
-    <option name="LAST_COMMIT_MESSAGE" value="aaa" />
+    <MESSAGE value="多尺度的融合" />
+    <option name="LAST_COMMIT_MESSAGE" value="多尺度的融合" />
   </component>
   <component name="WindowStateProjectService">
     <state x="471" y="130" key="#Deployment" timestamp="1621484041334">
@@ -414,10 +428,10 @@
     </state>
     <state x="288" y="149" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1621261807587" />
     <state x="469" y="179" key="SettingsEditor/1920.129.1440.900/0.0.1920.1080@0.0.1920.1080" timestamp="1615828925799" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1621346154443">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1622797954362">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1621346154443" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1622797954362" />
     <state x="752" y="423" key="com.jetbrains.plugins.remotesdk.ui.RemoteMappingsConfiguration" timestamp="1615828851382">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
